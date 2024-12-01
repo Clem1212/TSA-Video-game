@@ -1,0 +1,1173 @@
+<!--Draggable fixing  -->
+<!DOCTYPE html>
+<!--npm start -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="icon" type="image/png" type="image/x-icon" href="Logo.PNG">
+
+<title>Project X</title>
+
+   
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" type="text/css" />
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+ 
+
+
+<script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color:#c1dade;
+    display:flex;
+    flex-direction:column;
+  }
+  #map {
+    height: 100vh;
+    width: 100vw;
+    position: absolute; top: 0; bottom: 0;
+    z-index:0;
+  }
+</style>
+<style> body {
+      -webkit-animation: colorchange 20s infinite;
+      animation: colorchange 20s infinite;
+    }
+    /* #512DA8  #673AB7  */
+    @-webkit-keyframes colorchange {
+      25% {
+        background: #d3d3d3;
+      }
+      50% {
+        background: #666bb8;
+      }
+      100% {
+        background: #755ddf;
+      }
+     
+    }
+    @keyframes colorchange {
+      10% {
+        background: #d3d3d3;
+      }
+      15.4%{
+        background:#c1dade;
+      }
+      30% {
+        background: #21c2db;
+      }
+      50% {
+        background: #0d2633;
+      }
+      75% {
+        background:#222;
+      }
+      100% {
+        background: #171717;
+      }
+    }
+.pin {
+width: 31.4px;
+height: 30.5px;
+border-radius: 50% 50% 50% 0;
+background: #00FFFF;
+position: absolute;
+-webkit-transform: rotate(-45deg);
+-moz-transform: rotate(-45deg);
+-o-transform: rotate(-45deg);
+-ms-transform: rotate(-45deg);
+transform: rotate(-45deg);
+left: 50%;
+top: 50%;
+margin: -20px 0 0 -21.6px;
+-webkit-animation-name: bounce;
+-moz-animation-name: bounce;
+-o-animation-name: bounce;
+-ms-animation-name: bounce;
+animation-name: bounce;
+-webkit-animation-fill-mode: both;
+-moz-animation-fill-mode: both;
+-o-animation-fill-mode: both;
+-ms-animation-fill-mode: both;
+animation-fill-mode: both;
+-webkit-animation-duration: 1s;
+-moz-animation-duration: 1s;
+-o-animation-duration: 1s;
+-ms-animation-duration: 1s;
+animation-duration: 1s;
+
+ border: 00.1px solid #2f2f2f;
+}
+.pin:after {
+content: '';
+width: 14px;
+height: 14px;
+margin: 8px  8px;
+background:#d3d3d3 ;
+position: absolute;
+border-radius: 50%;
+ border: 000.1px solid #2f2f2f;
+}
+.pulse {
+background: rgba(#00FFFF);
+border-radius: 50%;
+height: 14px;
+width: 14px;
+position: absolute;
+left: 50%;
+top: 50%;
+margin: 11px 0px 0px -12px;
+-webkit-transform: rotateX(55deg);
+-moz-transform: rotateX(55deg);
+-o-transform: rotateX(55deg);
+-ms-transform: rotateX(55deg);
+transform: rotateX(55deg);
+z-index: -2;
+}
+.pulse:after {
+content: "";
+border-radius: 50%;
+height: 40px;
+width: 40px;
+position: absolute;
+margin: -13px 0 0 -13px;
+-webkit-animation: pulsate 1s ease-out;
+-moz-animation: pulsate 1s ease-out;
+-o-animation: pulsate 1s ease-out;
+-ms-animation: pulsate 1s ease-out;
+animation: pulsate 1s ease-out;
+-webkit-animation-iteration-count: infinite;
+-moz-animation-iteration-count: infinite;
+-o-animation-iteration-count: infinite;
+-ms-animation-iteration-count: infinite;
+animation-iteration-count: infinite;
+opacity: 0;
+-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+filter: alpha(opacity=0);
+-webkit-box-shadow: 0 0 1px 2px black;
+box-shadow: 0 0 1px 2px black;
+-webkit-animation-delay: 1.1s;
+-moz-animation-delay: 1.1s;
+-o-animation-delay: 1.1s;
+-ms-animation-delay: 1.1s;
+animation-delay: 1.1s;
+}
+@-moz-keyframes pulsate {
+0% {
+  -webkit-transform: scale(0.1, 0.1);
+  -moz-transform: scale(0.1, 0.1);
+  -o-transform: scale(0.1, 0.1);
+  -ms-transform: scale(0.1, 0.1);
+  transform: scale(0.1, 0.1);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+50% {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+100% {
+  -webkit-transform: scale(1.2, 1.2);
+  -moz-transform: scale(1.2, 1.2);
+  -o-transform: scale(1.2, 1.2);
+  -ms-transform: scale(1.2, 1.2);
+  transform: scale(1.2, 1.2);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+}
+@-webkit-keyframes pulsate {
+0% {
+  -webkit-transform: scale(0.1, 0.1);
+  -moz-transform: scale(0.1, 0.1);
+  -o-transform: scale(0.1, 0.1);
+  -ms-transform: scale(0.1, 0.1);
+  transform: scale(0.1, 0.1);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}50% {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+100% {
+  -webkit-transform: scale(1.2, 1.2);
+  -moz-transform: scale(1.2, 1.2);
+  -o-transform: scale(1.2, 1.2);
+  -ms-transform: scale(1.2, 1.2);
+  transform: scale(1.2, 1.2);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+}
+@-o-keyframes pulsate {
+0% {
+  -webkit-transform: scale(0.1, 0.1);
+  -moz-transform: scale(0.1, 0.1);
+  -o-transform: scale(0.1, 0.1);
+  -ms-transform: scale(0.1, 0.1);
+  transform: scale(0.1, 0.1);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+50% {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+100% {
+  -webkit-transform: scale(1.2, 1.2);
+  -moz-transform: scale(1.2, 1.2);
+  -o-transform: scale(1.2, 1.2);
+  -ms-transform: scale(1.2, 1.2);
+  transform: scale(1.2, 1.2);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+}
+@keyframes pulsate {
+0% {
+  -webkit-transform: scale(0.1, 0.1);
+  -moz-transform: scale(0.1, 0.1);
+  -o-transform: scale(0.1, 0.1);
+  -ms-transform: scale(0.1, 0.1);
+  transform: scale(0.1, 0.1);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+50% {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+100% {
+  -webkit-transform: scale(1.2, 1.2);
+  -moz-transform: scale(1.2, 1.2);
+  -o-transform: scale(1.2, 1.2);
+  -ms-transform: scale(1.2, 1.2);
+  transform: scale(1.2, 1.2);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+}
+@-moz-keyframes bounce {
+0% {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  -webkit-transform: translateY(-2000px) rotate(-45deg);
+  -moz-transform: translateY(-2000px) rotate(-45deg);
+  -o-transform: translateY(-2000px) rotate(-45deg);
+  -ms-transform: translateY(-2000px) rotate(-45deg);
+  transform: translateY(-2000px) rotate(-45deg);
+}
+60% {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  -webkit-transform: translateY(30px) rotate(-45deg);
+  -moz-transform: translateY(30px) rotate(-45deg);
+  -o-transform: translateY(30px) rotate(-45deg);
+  -ms-transform: translateY(30px) rotate(-45deg);
+  transform: translateY(30px) rotate(-45deg);
+}
+80% {
+  -webkit-transform: translateY(-10px) rotate(-45deg);
+  -moz-transform: translateY(-10px) rotate(-45deg);
+  -o-transform: translateY(-10px) rotate(-45deg);
+  -ms-transform: translateY(-10px) rotate(-45deg);
+  transform: translateY(-10px) rotate(-45deg);
+}
+100% {
+  -webkit-transform: translateY(0) rotate(-45deg);
+  -moz-transform: translateY(0) rotate(-45deg);
+  -o-transform: translateY(0) rotate(-45deg);
+  -ms-transform: translateY(0) rotate(-45deg);
+  transform: translateY(0) rotate(-45deg);
+}
+}
+@-webkit-keyframes bounce {
+0% {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  -webkit-transform: translateY(-2000px) rotate(-45deg);
+  -moz-transform: translateY(-2000px) rotate(-45deg);
+  -o-transform: translateY(-2000px) rotate(-45deg);
+  -ms-transform: translateY(-2000px) rotate(-45deg);
+  transform: translateY(-2000px) rotate(-45deg);
+}
+60% {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  -webkit-transform: translateY(30px) rotate(-45deg);
+  -moz-transform: translateY(30px) rotate(-45deg);
+  -o-transform: translateY(30px) rotate(-45deg);
+  -ms-transform: translateY(30px) rotate(-45deg);
+  transform: translateY(30px) rotate(-45deg);
+}
+80% {
+  -webkit-transform: translateY(-10px) rotate(-45deg);
+  -moz-transform: translateY(-10px) rotate(-45deg);
+  -o-transform: translateY(-10px) rotate(-45deg);
+  -ms-transform: translateY(-10px) rotate(-45deg);
+  transform: translateY(-10px) rotate(-45deg);
+}
+100% {
+  -webkit-transform: translateY(0) rotate(-45deg);
+  -moz-transform: translateY(0) rotate(-45deg);
+  -o-transform: translateY(0) rotate(-45deg);
+  -ms-transform: translateY(0) rotate(-45deg);
+  transform: translateY(0) rotate(-45deg);
+}
+}
+@-o-keyframes bounce {
+0% {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  -webkit-transform: translateY(-2000px) rotate(-45deg);
+  -moz-transform: translateY(-2000px) rotate(-45deg);
+  -o-transform: translateY(-2000px) rotate(-45deg);
+  -ms-transform: translateY(-2000px) rotate(-45deg);
+  transform: translateY(-2000px) rotate(-45deg);
+}
+60% {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  -webkit-transform: translateY(30px) rotate(-45deg);
+  -moz-transform: translateY(30px) rotate(-45deg);
+  -o-transform: translateY(30px) rotate(-45deg);
+  -ms-transform: translateY(30px) rotate(-45deg);
+  transform: translateY(30px) rotate(-45deg);
+}
+80% {
+  -webkit-transform: translateY(-10px) rotate(-45deg);
+  -moz-transform: translateY(-10px) rotate(-45deg);
+  -o-transform: translateY(-10px) rotate(-45deg);
+  -ms-transform: translateY(-10px) rotate(-45deg);
+  transform: translateY(-10px) rotate(-45deg);
+}
+100% {
+  -webkit-transform: translateY(0) rotate(-45deg);
+  -moz-transform: translateY(0) rotate(-45deg);
+  -o-transform: translateY(0) rotate(-45deg);
+  -ms-transform: translateY(0) rotate(-45deg);
+  transform: translateY(0) rotate(-45deg);
+}
+}
+@keyframes bounce {
+0% {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  -webkit-transform: translateY(-2000px) rotate(-45deg);
+  -moz-transform: translateY(-2000px) rotate(-45deg);
+  -o-transform: translateY(-2000px) rotate(-45deg);
+  -ms-transform: translateY(-2000px) rotate(-45deg);
+  transform: translateY(-2000px) rotate(-45deg);
+}
+60% {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  -webkit-transform: translateY(30px) rotate(-45deg);
+  -moz-transform: translateY(30px) rotate(-45deg);
+  -o-transform: translateY(30px) rotate(-45deg);
+  -ms-transform: translateY(30px) rotate(-45deg);
+  transform: translateY(30px) rotate(-45deg);
+}
+80% {
+  -webkit-transform: translateY(-10px) rotate(-45deg);
+  -moz-transform: translateY(-10px) rotate(-45deg);
+  -o-transform: translateY(-10px) rotate(-45deg);
+  -ms-transform: translateY(-10px) rotate(-45deg);
+  transform: translateY(-10px) rotate(-45deg);
+}
+100% {
+  -webkit-transform: translateY(0) rotate(-45deg);
+  -moz-transform: translateY(0) rotate(-45deg);
+  -o-transform: translateY(0) rotate(-45deg);
+  -ms-transform: translateY(0) rotate(-45deg);
+  transform: translateY(0) rotate(-45deg);
+}
+}
+
+
+.loader {
+  -webkit-animation: load-out 10s;
+  animation: load-out 6s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes load-out {
+
+ from {
+      top: 0;
+      opacity: 1;
+  }
+
+  to {
+      top: 100%;
+      opacity: 0;
+  }
+}
+
+@keyframes load-out {
+  from {
+      top: 0;
+      opacity: 1;
+  }
+
+  to {
+      top: 100%;
+      opacity: 0;
+  }
+}
+
+
+.mapboxgl-ctrl-geocoder {
+font-size: 18px;
+line-height: 24px;
+font-family: "Open Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
+position: relative;
+background-color: #fff;
+width: 100%;
+min-width: 200px;
+z-index: 1;
+border-radius: 4px;
+transition: width .25s, min-width .25s;
+
+}
+
+.mapboxgl-ctrl-geocoder--input {
+font: inherit;
+width: 100%;
+border: 0;
+background-color: transparent;
+margin: 0;
+height: 50px;
+color: #404040; /* fallback */
+color: rgba(0, 0, 0, 0.75);
+padding: 6px 45px;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+}
+
+#menu {
+      position: absolute;
+      background: transparent;
+      padding: 10px;
+      font-family: 'Open Sans', sans-serif;
+      
+      display:flex;
+      bottom:0;
+      right:0;
+      
+  }
+  .voice-button {
+          display: inline-block;
+          vertical-align: middle;
+          margin-left: 10px;
+          width: 32px;
+          height: 32px;
+          background-color: transparent ;
+          border: none;
+          border-radius: 50%;
+          cursor: pointer;
+            padding: 10px;
+            
+             position: absolute;
+             margin-left:-33px;
+             top:1px;
+
+          padding: 10px;
+          text-align: center;
+      }
+      .voice-button-icon:hover {
+           fill: cyan ;
+      }
+      .voice-button-icon {
+          width: 20px;
+          height: 20px;
+          margin: -1.5px;
+          fill:#AAF3F3 ;
+      }
+      
+      
+       .calculation-box {
+      height: 60px;
+      width: 240px;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 6%;
+          cursor: pointer;
+            padding: 15px;
+      text-align: center;
+      z-index:  1;
+  }
+
+  p {
+      font-family: 'sans-serif';
+      margin: 0;
+      font-size: 12px;
+     
+  }
+  #tilequery {
+      display:block;
+      
+  }
+  
+  /* margin: 150px; */
+/* Style for the Mapbox Geocoder control */
+.mapboxgl-ctrl-geocoder.mapboxgl-ctrl {
+  background: transparent;
+  border: none;
+  color: transparent; /*https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css */
+  
+}
+.mapboxgl-ctrl-geocoder.mapboxgl-ctrl input::placeholder {
+  margin:3;
+  color: white;
+  
+}
+
+
+.mapboxgl-ctrl-geocoder--button  {
+                        background: transparent;
+                        
+}
+
+
+.coords {
+background: rgba(0, 0, 0, 0.5);
+color: #fff;
+position: absolute;
+bottom: 40px;
+left: 10px;
+padding: 5px 10px;
+margin: 0;
+font-size: 11px;
+line-height: 18px;
+border-radius: 3px;
+display: none;
+}
+.popup {
+  position: fixed;
+  top: 20px; /* Adjust this value to control the distance from the top */
+  right: 20px; /* Adjust this value to control the distance from the right */
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.popup p {
+  margin: 0;
+}
+
+.popup-close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+p {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+}
+
+h2{
+  font-family: Arial, sans-serif;
+  font-size: 23px;
+  color:#186d7a;
+}
+</style>
+
+
+</head>
+<body>
+<div class="loader">
+<div class='pin'></div>
+<div class='pulse'></div>
+</div>
+
+
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.0/mapbox-gl-draw.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.0/mapbox-gl-draw.css" type="text/css">
+<div id="map"></div>
+<div class="calculation-box" >
+  <p>Draw a polygon for area and density</p>
+  <div id="calculated-area"></div>
+     <div id="weather-info" class="weather-info"></div>
+</div>
+
+<div class="popup" id="popup">
+  <span class="popup-close" id="popup-close">&times;</span>
+  <h2>Welcome to PinPoint</h2>
+  <p>With real time GPS functionality  </p>
+  <p>and various map views, </p>
+  <p> ease and get info on places to go! </p>
+  <p>See the number of people in an</p>
+  <p> area in an area instantly,</p>
+  <p> helping you make decisions </p>
+  <p>where to go. Experience conveinece</p>
+  <p> helping you make decisions </p>
+  <p>location data you can draw for </p>
+  <p>estimated population data </p>
+  <p>or see pinpoint for realtime</p>
+</div>
+
+<script>
+var closebtns = document.getElementsByClassName("close");
+var i;
+
+for (i = 0; i < closebtns.length; i++) {
+closebtns[i].addEventListener("click", function() {
+  this.parentElement.style.display = 'none';
+});
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  var popup = document.getElementById('popup');
+  var closeButton = document.getElementById('popup-close');
+  
+  // Check if the popup has been closed before
+  if (!localStorage.getItem('popupClosed')) {
+    popup.style.display = 'block';
+  }
+  
+  // Close the popup when the close button is clicked
+  closeButton.addEventListener('click', function() {
+    popup.style.display = 'none';
+    // Set flag in local storage to indicate popup has been closed
+    localStorage.setItem('popupClosed', 'true');
+  });
+});
+
+</script>
+
+
+  
+
+
+<div id="menu">
+
+
+
+  
+  <button id="toggleButton" class="voice-button" > <svg class="voice-button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 3c3.2 0 6 2.8 6 6v4c0 3.2-2.8 6-6 6s-6-2.8-6-6v-4c0-3.2 2.8-6 6-6zm4 10h2c0 2.8-2.2 5-5 5s-5-2.2-5-5h2c0 1.7 1.3 3 3 3s3-1.3 3-3zm-4 1.8c-1.6 0-2.8-1.3-2.8-2.8h1.4c0 .7.6 1.4 1.4 1.4v1.4zm2.2 0v-1.4c.8 0 1.4-.6 1.4-1.4h1.4c0 1.5-1.2 2.8-2.8 2.8z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+          </svg></button>
+
+  <!-- https://docs.mapbox.com/api/maps/styles/#mapbox-styles -->
+  <input id="navigation-night-v1" type="radio" name="rtoggle" value="light" checked="checked">
+  <label for="navigation-night-v1" >Default</label>
+  <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite" >
+  <label for="satellite-streets-v12">Satellite streets</label>
+  <input id="streets-v11" type="radio" name="rtoggle" value="dark">
+  <label for="streets-v11">Lights</label>
+  <input id="streets-v8" type="radio" name="rtoggle" value="streets">
+  <label for="streets-v8">Streets</label>
+  <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors">
+  <label for="outdoors-v12">Outdoors</label>
+  
+  
+  
+
+
+</div>
+<pre id="coords" class="coords"></pre>
+<script>
+  let isMicEnabled = false;
+  let recognition;
+
+  function startRecognition() {
+    if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && !isMicEnabled) {
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      recognition.onstart = () => {
+        console.log('Speech recognition started...');
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[event.results.length - 1][0].transcript;
+        const activeElement = document.activeElement;
+
+        if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA')) {
+          activeElement.value += transcript;
+        }
+      };
+
+      recognition.start();
+      isMicEnabled = true;
+    }
+  }
+
+  function stopRecognition() {
+    if (recognition && isMicEnabled) {
+      recognition.stop();
+      isMicEnabled = false;
+    }
+  }
+
+  document.getElementById('toggleButton').addEventListener('click', () => {
+    if (isMicEnabled) {
+      stopRecognition();
+    } else {
+      startRecognition();
+    }
+  });
+  
+  
+</script>
+
+
+
+<script>
+ mapboxgl.accessToken = 'pk.eyJ1IjoiMHB1aW1sb3JkNDQ1IiwiYSI6ImNsdW4zNXUxbzFoaG8yaWxobnFtZTZlazgifQ.Lwq4vHwo2IoWXQEOO-P31Q';
+
+  navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
+    enableHighAccuracy: true
+  });
+
+  function successLocation(position) {
+    setupMap([position.coords.longitude, position.coords.latitude]);
+  }
+
+  function errorLocation() {
+    setupMap([-2.24, 53.48]);
+  }
+  const ws = new WebSocket('ws://localhost:8080');
+
+ws.onopen = () => {
+  console.log('Connected to WebSocket server');
+};
+
+ws.onmessage = (event) => {
+  const message = event.data;
+
+  console.log('Received message from client:', message);
+
+  // Parse the message as JSON
+  try {
+    const messageData = JSON.parse(message);
+
+    // Check if the message data is valid
+    if (
+      messageData &&
+      (messageData.type === 'location' || messageData.type === 'locationUpdate') &&
+      Array.isArray(messageData.location) &&
+      messageData.location.length === 2
+    ) {
+      const [longitude, latitude] = messageData.location;
+
+      // Call the function to add marker with the extracted location
+      addMarker([longitude, latitude]);
+    } else {
+      console.error('Invalid location data:', messageData);
+    }
+  } catch (error) {
+    console.error('Error parsing message:', error);
+  }
+};
+
+function addMarker(location) {
+  console.log('Adding marker at location:', location);
+
+  // Assuming map and mapboxgl are properly defined elsewhere in your code
+  if (map && map.loaded()) {
+    new mapboxgl.Marker({ color: getRandomColor() })
+      .setLngLat(location)
+      .addTo(map);
+  } else {
+    console.error('Map not available or not loaded');
+  }
+}
+
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+    function setupMap(center) {
+  
+   map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/navigation-night-v1',
+    center: center,
+    zoom: 15
+    });
+
+  
+  map.on('load', () => {
+     
+      addMarker(center);
+      ws.send(JSON.stringify({ type: 'location', location: center }));
+    });
+
+
+  
+const layerList = document.getElementById('menu');
+  const inputs = layerList.getElementsByTagName('input');
+//here it is making new layers where I cant see things input layer
+  for (const input of inputs) {
+      input.onclick = (layer) => {
+          const layerId = layer.target.id;
+          map.setStyle('mapbox://styles/mapbox/' + layerId);
+      };
+  }//here
+  
+
+  
+  
+  for (const input of inputs) {
+input.onclick = (layer) => {
+  const layerId = layer.target.id;
+  map.setStyle('mapbox://styles/mapbox/' + layerId);
+
+  // Store the selected map style in local storage
+  localStorage.setItem('selectedMapStyle', layerId);
+};
+}
+
+// Add this code to set the initial map style based on stored preference
+const storedMapStyle = localStorage.getItem('selectedMapStyle');
+if (storedMapStyle) {
+map.setStyle('mapbox://styles/mapbox/' + storedMapStyle);
+}
+
+
+  fetchWeatherData(center);
+  
+const draw = new MapboxDraw({
+displayControlsDefault: true,
+controls: {
+  polygon: true,
+  trash: true,
+  point: false,
+  line_string: true,
+},
+styles: [
+  // Set the line style for the user-input coordinates
+  {
+    'id': 'gl-draw-line',
+    'type': 'line',
+    'filter': [
+      'all',
+      ['!=', 'mode', 'static']
+    ],
+    'layout': {
+      'line-cap': 'round',
+      'line-join': 'round'
+    },
+    'paint': {
+      'line-color': '#438EE4',
+      'line-dasharray': [0.2, 2],
+      'line-width': 2,
+      'line-opacity': 0.7
+    }
+  },
+  // Style the vertex point halos
+  {
+    'id': 'gl-draw-polygon-and-line-vertex-halo-active',
+    'type': 'circle',
+    'filter': [
+      'all',
+      ['==', 'meta', 'vertex'],
+      ['==', '$type', 'Point'],
+      ['!=', 'mode', 'static']
+    ],
+    'paint': {
+      'circle-radius': 12,
+      'circle-color': '#FFF'
+    }
+  },
+  // Style the vertex points
+  {
+    'id': 'gl-draw-polygon-and-line-vertex-active',
+    'type': 'circle',
+    'filter': [
+      'all',
+      ['==', 'meta', 'vertex'],
+      ['==', '$type', 'Point'],
+      ['!=', 'mode', 'static']
+    ],
+    'paint': {
+      'circle-radius': 8,
+      'circle-color': '#438EE4'
+    }
+  },
+  // Style the polygon fill
+  {
+    'id': 'gl-draw-polygon-fill',
+    'type': 'fill',
+    'filter': ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+    'paint': {
+      'fill-color': '#438EE4', // You can change this color to blue
+      'fill-opacity': 0.1, // Adjust the opacity as needed
+    }
+  }
+]
+});
+
+map.addControl(draw);
+
+let pointCount = 0;
+
+map.on('draw.create', (event) => {
+pointCount++;
+if (pointCount >= 2) {
+  disableDraw();
+}
+});
+
+map.on('draw.delete', () => {
+pointCount--;
+enableDraw();
+});
+
+function enableDraw() {
+map.on('click', addPointOnClick);
+}
+
+function disableDraw() {
+map.off('click', addPointOnClick);
+}
+
+function addPointOnClick(e) {
+if (pointCount < 2) {
+  draw.add({
+    type: 'Feature',
+    properties: {},
+    geometry: {
+      type: 'Point',
+      coordinates: [e.lngLat.lng, e.lngLat.lat]
+    }
+  });
+}
+}
+
+map.on('draw.create', updateArea);
+map.on('draw.delete', updateArea);
+map.on('draw.update', updateArea);
+
+
+ const peoplePerSquareUnitGuess = 90; // Adjust this value as needed
+
+
+function updateArea(e) {
+  const data = draw.getAll();
+  const answer = document.getElementById('calculated-area');
+  if (data.features.length > 0) {
+      const area = turf.area(data);
+      // Replace this with your actual population density data
+      const populationDensity = 100; // people per square kilometer
+
+      // Calculate the estimated population
+      const estimatedPopulation = populationDensity * (area / 1000000); // Convert square meters to square kilometers
+
+      answer.innerHTML = `<p><strong>${area.toFixed(2)}</strong></p><p>square meters</p>`;
+      answer.innerHTML += `<p>Estimated Population: <strong>${Math.round(estimatedPopulation)}</strong></p>`;
+  } else {
+      answer.innerHTML = '';
+      if (e.type !== 'draw.delete')
+          alert('Click the map to draw a polygon.');
+  }
+}
+
+
+
+    const nav = new mapboxgl.NavigationControl();
+    map.addControl(nav);
+
+    var directions = new MapboxDirections({
+      accessToken: mapboxgl.accessToken
+      
+    
+    });
+
+    map.addControl(directions, 'top-left');
+    
+    map.addControl(new mapboxgl.FullscreenControl({ container: document.querySelector('body')
+    
+                             
+    }));
+//io
+map.addControl(
+new mapboxgl.GeolocateControl({
+positionOptions: {
+enableHighAccuracy: true
+},
+// When active the map will receive updates to the device's location as it changes.
+trackUserLocation: true,
+// Draw an arrow next to the location dot to indicate which direction the device is heading.
+showUserHeading: true
+})
+);
+
+
+//const marker = new mapboxgl.Marker({
+//draggable: true
+//})
+//.setLngLat([0, 0])
+//.addTo(map);
+
+//localStorage.setItem();
+//save marker 4 local storage and allow it to be togglable
+//function onDragEnd() {
+//const lngLat = marker.getLngLat();
+//coords.style.display = 'block';
+//coords.innerHTML = `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
+//}
+
+//marker.on('dragend', onDragEnd);
+
+    map.on('load', () => {
+      const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        zoom: 13,
+        placeholder: '           Enter to pinpoint...',
+        //change size
+      });
+
+      map.addControl(geocoder, 'top-left');
+
+
+      const marker = new mapboxgl.Marker({
+        'color': '#00FFFF '
+      });
+
+
+      geocoder.on('result', async (event) => {
+        const point = event.result.center;
+        const tileset = 'examples.dl46ljcs';
+        const radius = 1609;
+        const limit = 50;
+        marker.setLngLat(point).addTo(map);
+        const query = await fetch(
+          `https://api.mapbox.com/v4/${tileset}/tilequery/${point[0]},${point[1]}.json?radius=${radius}&limit=${limit}&access_token=${mapboxgl.accessToken}`,
+          { method: 'GET' }
+        );
+        const json = await query.json();
+        map.getSource('tilequery').setData(json);
+        
+        
+      });
+
+      map.addSource('tilequery', {
+        type: 'geojson',
+        data: {
+          'type': 'FeatureCollection',
+          'features': [],
+         
+        }
+        
+      } );
+
+ map.addLayer({
+        id: 'tilequery-points',
+       
+        type: 'circle',
+        source: 'tilequery',
+       
+      });
+
+      const popup = new mapboxgl.Popup();
+
+      map.on('mouseenter', 'tilequery-points', (event) => {
+        map.getCanvas().style.cursor = 'pointer';
+        const properties = event.features[0].properties;
+        const obj = JSON.parse(properties.tilequery);
+        const coordinates = new mapboxgl.LngLat(
+          properties.longitude,
+          properties.latitude,
+           
+        );
+
+        const content = `<h3>${properties.STORE_NAME}</h3><h4>${
+          properties.STORE_TYPE
+        }</h4><p>${properties.ADDRESS_LINE1}</p><p>${(
+          obj.distance / 1609.344
+        ).toFixed(2)} mi. from location</p>`;
+
+        popup.setLngLat(coordinates).setHTML(content).addTo(map);
+        
+//0
+      });
+
+      map.on('mouseleave', 'tilequery-points', () => {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+    });
+  }
+  
+
+
+async function fetchWeatherData(coords) {
+  const apiKey = 'f5a61986aa077076d9bd1c4dc12b2e1d';
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${coords[1]}&lon=${coords[0]}&appid=${apiKey}&units=metric`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    // Display temperature information on the map
+    const temperature = data.main.temp;
+    const weatherInfo = document.getElementById('weather-info');
+    weatherInfo.innerHTML = `<p>Temperature: ${temperature}°C</p>`;
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+  }
+}
+
+
+//if you do not click X it will not show markers
+
+
+</script>
+
+</body>
+
+</html>
+
+
+
+
+

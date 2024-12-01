@@ -1,0 +1,52 @@
+
+add([
+    pos(20, 120),
+    rect(600, 20),
+    area(),
+    body({ isStatic: true }),
+  //  color(rgb(128, 128, 128)),
+    "wall",
+    color(rgb(0, 0, 0)) // Dark green
+]);
+// Living room
+
+
+add([
+    pos(20, 400),
+    rect(300, 20),
+    area(),
+    body({ isStatic: true }),
+    //color(rgb(128, 128, 128)),
+    "wall",
+    color(rgb(0, 0, 0)) // Dark green
+]);
+add([
+    pos(420, 440),
+    rect(300, 20),
+    area(),
+    body({ isStatic: true }),
+  //  color(rgb(128, 128, 128)),
+    "wall",
+    color(rgb(0, 0, 0)) // Dark green
+]);
+add([
+    pos(820, 440),
+    rect(300, 20),
+    area(),
+    body({ isStatic: true }),
+   // color(rgb(128, 128, 128)),
+    "wall",
+    color(rgb(0, 0, 0)) // Dark green
+]);
+// Kitchen
+
+add([
+    pos(620, 460),
+    rect(20, 288),
+    area(),
+    body({ isStatic: true }),
+ // color(rgb(128, 128, 128)),
+    "wall",
+    color(rgb(0, 0, 0)) // Dark green
+
+]);

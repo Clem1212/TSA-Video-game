@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaboom Game</title>
+    <script src="https://unpkg.com/kaplay@3001.0.0-alpha.20/dist/kaplay.js"></script>
+  </head>
+<body>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<script>
+kaplay({
+  width: 1624,
+    height: 768,
+    letterbox: true,
+    
+});
+
+loadRoot('https://i.imgur.com/')
+loadSprite('bg', '/qJ6bIow.png');
+//char
+loadSprite("bean", "AiRF3GI.png");
+loadSprite("WBC-going-left", "pw4C08u.png")
+loadSprite("WBC-going-right", "ftpM2dK.png")
+loadSprite("gun", "/zH93pIT.png");
+//target
+loadSprite("ghosty", "dxJCnWo.png");
+//particles
+loadSprite("hexagon", "/L2QzPUQ.png");//right
+//up https://imgur.com/qvj4jjH
+//down https://imgur.com/NW9L7cG
+//left https://imgur.com/QgnWZgH
+///L2QzPUQ.png right
+loadSprite("cursorU", "/qvj4jjH.png"); // Up
+loadSprite("cursorL", "/QgnWZgH.png"); // Left
+loadSprite("cursorR", "L2QzPUQ.png"); // Right
+loadSprite("cursorD", "NW9L7cG.png"); // Down
+loadSprite('link-going-down', 'c7zdEez.png')
+loadSprite("star", "/L2QzPUQ.png");
+//wind
+loadSprite('top-door', '/1s3KLlk.png');
+
+
+
+add([sprite('bg'), pos(0, -160), scale(width() / 240, height() / 240),scale(1.85)]);
+add([sprite('bg'), pos(0, -820), scale(width() / 240, height() / 240),scale(1.85)]);
+
+
+const nav = new NavMesh();
+// Hallway
+nav.addPolygon([vec2(20, 20), vec2(1004, 20), vec2(620, 120), vec2(20, 120)]);
+// Living room
+nav.addPolygon([
+    vec2(620, 120),
+    vec2(1004, 20),
+    vec2(1004, 440),
+    vec2(620, 140),
+]);
+nav.addPolygon([vec2(20, 140), vec2(620, 140), vec2(1004, 440), vec2(20, 440)]);
+// Kitchen
+nav.addPolygon([vec2(20, 460), vec2(320, 460), vec2(320, 748), vec2(20, 748)]);
+nav.addPolygon([
+    vec2(320, 440),
+    vec2(420, 440),
+    vec2(420, 748),
+    vec2(320, 748),
+]);
+nav.addPolygon([
+    vec2(420, 460),
+    vec2(620, 460),
+    vec2(620, 748),
+    vec2(420, 748),
+]);
+// Storage room
+nav.addPolygon([
+    vec2(640, 460),
+    vec2(720, 460),
+    vec2(720, 748),
+    vec2(640, 748),
+]);
+nav.addPolygon([
+    vec2(720, 440),
+    vec2(820, 440),
+    vec2(820, 748),
+    vec2(720, 748),
+]);
+nav.addPolygon([
+    vec2(820, 460),
+    vec2(1004, 460),
+    vec2(1004, 748),
+    vec2(820, 748),
+]);
+
+add([
+    pos(20, 680),
+    sprite('top-door'),
+    area(),
+    scale('2'),
+    "top-door",
+    
+]);
+
+
+add([
+    pos(0, 0),
+    rect(20, height()),
+    area(),
+    body({ isStatic: true }),
+  //  color(rgb(128, 128, 128)),
+    "wall",
+    color(rgb(0, 0, 0)) // Dark green
+]);
+add([
+    pos(0, 0),
+    rect(width(), 20),
+    area(),
+    body({ isStatic: true }),
+   // color(rgb(128, 128, 128)),
+    "wall",
+    color(rgb(0, 0, 0)) // Dark green
+]);
+add([
+    pos(width() - 20, 0),
+    rect(20, height()),
+    area(),
+    body({ isStatic: true }),
+  //  color(rgb(128, 128, 128)),
+    "wall",
+    color(rgb(0, 0, 0)) // Dark green
+]);
+add([
+    pos(0, height() - 20),
+    rect(width(), 20),
+    area(),
+    body({ isStatic: true }),
+ //   color(rgb(128, 128, 128)),
+    "wall",
+    color(rgb(0, 0, 0)) // Dark green
+]);
+// Hallway
+
+// Storage
+
+const player = add([
+    pos(50, 50),
+    sprite("bean"),
+    anchor(vec2(0, 0)),
+    area(),
+    body(),
+    "player",
+    scale(2.5)
+]);
+// Store the previous position of the player
+let prevPlayerPos = player.pos;
+
+// Update player sprite based on movement direction
+onUpdate(() => {
+    const currentPlayerPos = player.pos;
+
+    // Calculate movement direction
+    const dx = currentPlayerPos.x - prevPlayerPos.x; // Horizontal movement
+    const dy = currentPlayerPos.y - prevPlayerPos.y; // Vertical movement
+
+    // Determine the direction based on movement
+    if (Math.abs(dx) > Math.abs(dy)) {
+        // Horizontal movement dominates
+        if (dx > 0) {
+            player.use(sprite("WBC-going-right")); // Moving right
+        } else if (dx < 0) {
+            player.use(sprite("WBC-going-left")); // Moving left
+        }
+    } else {
+        // Vertical movement dominates
+        if (dy > 0) {
+            player.use(sprite("bean")); // Moving down
+        } else if (dy < 0) {
+            player.use(sprite("link-going-down")); // Moving up
+        }
+    }
+
+    // Update the previous position for the next frame
+    prevPlayerPos = currentPlayerPos;
+});
+
+// Key event handlers for player movement
+onKeyDown("a", () => {
+    player.move(LEFT.scale(SPEED));
+});
+
+onKeyDown("d", () => {
+    player.move(RIGHT.scale(SPEED));
+});
+
+onKeyDown("s", () => {
+    player.move(DOWN.scale(SPEED));
+});
+
+onKeyDown("w", () => {
+    player.move(UP.scale(SPEED));
+});
+
+
+const gun = player.add([
+    sprite("gun"),
+    anchor(vec2(-2, 0)),
+    rotate(0),
+    "player",
+    scale(1.5)
+]);
+
+
+layers([
+    "game",
+    "ui",
+], "game");
+
+
+// Initialize the cursor sprite
+const cursor = add([
+    sprite("cursorU"), // Default sprite (up)
+    pos(),
+    layer("ui"),
+    scale(2),
+]);
+
+// Hide the default cursor
+setCursor("none");
+
+// Store the previous mouse position
+let prevMousePos = mousePos();
+
+// Update cursor sprite on each frame
+onUpdate(() => {
+    const currentMousePos = mousePos();
+
+    // Calculate the movement direction
+    const dx = currentMousePos.x - prevMousePos.x; // Horizontal movement
+    const dy = currentMousePos.y - prevMousePos.y; // Vertical movement
+
+    // Determine the direction based on movement
+    if (Math.abs(dx) > Math.abs(dy)) {
+        // Horizontal movement dominates
+        if (dx > 0) {
+            cursor.use(sprite("cursorR")); // Moving right
+        } else if (dx < 0) {
+            cursor.use(sprite("cursorL")); // Moving left
+        }
+    } else {
+        // Vertical movement dominates
+        if (dy > 0) {
+            cursor.use(sprite("cursorD")); // Moving down
+        } else if (dy < 0) {
+            cursor.use(sprite("cursorU")); // Moving up
+        }
+    }
+
+    // Update the cursor position
+    cursor.pos = currentMousePos;
+
+    // Save the current position for the next frame
+    prevMousePos = currentMousePos;
+});
+
+function addEnemy(p) {
+    const enemy = add([
+        {
+            add() {
+                this.onHurt(() => {
+                    this.opacity = this.hp() / 100;
+                });
+                this.onDeath(() => {
+                    const rect = this.localArea();
+                    rect.pos = rect.pos.sub(rect.width / 2, rect.height / 2);
+                    const dissipate = add([
+                        pos(this.pos),
+                        particles({
+                            max: 10,
+                            speed: [30, 60],
+                            angle: [0, 360],
+                            angularVelocity: [0, 45],
+                            lifeTime: [0.5, 0.8],
+                            colors: [rgb(128, 128, 255)],
+                            opacities: [0.5, 0.0],
+                            scale: [0.5, 1],
+                            texture: getSprite("star").data.tex,
+                            quads: [getSprite("star").data.frames[0]],
+                        }, {
+                            lifetime: 0.8,
+                            shape: rect,
+                            rate: 0,
+                            direction: -90,
+                            spread: 30,
+                        }),
+                    ]);
+                    dissipate.emit(20);
+                    dissipate.onEnd(() => {
+                        destroy(dissipate);
+                    });
+                    destroy(this);
+                });
+                this.onObjectsSpotted(objects => {
+                    const playerSeen = objects.some(o => o.is("player"));
+                    if (playerSeen) {
+                        enemy.action = "pursuit";
+                        enemy.waypoints = null;
+                    }
+                });
+                this.onPatrolFinished(() => {
+                    enemy.action = "observe";
+                });
+            },
+        },
+        pos(p),
+        sprite("ghosty"),
+        scale(5.8),
+        opacity(1),
+        anchor(vec2(0, 0)),
+        area(),
+        body(),
+        // Health provides properties and methods to keep track of the enemies health
+        health(100),
+        // Sentry makes it easy to check for visibility of the player
+        sentry({ includes: "player" }, {
+            lineOfSight: true,
+            raycastExclude: ["enemy"],
+        }),
+        // Patrol can make the enemy follow a computed path
+        patrol({ speed: 100 }),
+        // Navigator can compute a path given a graph
+        navigation({
+            graph: nav,
+            navigationOpt: {
+                type: "edges",
+            },
+        }),
+        "enemy",
+        { action: "observing", waypoint: null },
+    ]);
+    return enemy;
+}
+addEnemy(vec2(width() * 3 / 4, height() / 2));
+addEnemy(vec2(width() * 2 / 4, height() / 2));
+addEnemy(vec2(width() * 3 / 4, height() / 2));
+addEnemy(vec2(width() * 1 / 4, height() / 2));
+addEnemy(vec2(width() * 2 / 4, height() * 2 / 3));
+addEnemy(vec2(width() * 1 / 4, height() * 2 / 3));
+addEnemy(vec2(width() * 1 / 2, height() * 2 / 3));
+addEnemy(vec2(width() * 0.8, height() * 2 / 3));
+
+let path;
+
+onUpdate("enemy", enemy => {
+    switch (enemy.action) {
+        case "observe": {
+            break;
+        }
+        case "pursuit": {
+            if (enemy.hasLineOfSight(player)) {
+                // We can see the player, just go straight to their location
+                enemy.moveTo(player.pos, 100);
+            }
+            else {
+                // We can't see the player, but we know where they are, plot a path
+                try {
+                    path = enemy.navigateTo(player.pos);
+                    if (path) {
+                        enemy.waypoints = path;
+                        enemy.action = "observe";
+                    } else {
+                        console.warn("No valid path found for enemy:", enemy);
+                        enemy.action = "observe";
+                    }
+                } catch (error) {
+                    console.error("Navigation error:", error);
+                    enemy.action = "observe";
+                }
+            }
+            break;
+        }
+    }
+});
+const SPEED = 100;
+
+const dirs = {
+    "a": LEFT,
+    "d": RIGHT,
+    "s": DOWN,
+    "w": UP,
+};
+
+
+
+for (const dir in dirs) {
+    onKeyDown(dir, () => {
+        player.move(dirs[dir].scale(SPEED));
+    });
+}
+
+onMouseMove(() => {
+    gun.angle = mousePos().sub(player.pos).angle();
+    gun.flipY = Math.abs(gun.angle) > 90;
+});
+
+onMousePress(() => {
+    const flash = gun.add([
+        pos(
+            getSprite("gun").data.width * 1.5,
+            Math.abs(gun.angle) > 90 ? 7 : -7,
+        ),
+        getSprite("/L2QzPUQ.png"),scale(2),
+        opacity(0.5),
+    ]);
+    flash.fadeOut(0.5).then(() => {
+        destroy(flash);
+    });
+
+    const dir = mousePos().sub(player.pos).unit().scale(1024);
+    const hit = raycast(player.pos, dir, [
+        "player",
+    ]);
+    if (hit) {
+        const splatter = add([
+            pos(hit.point),
+            particles({
+                max: 20,
+                speed: [200, 250],
+                lifeTime: [0.2, 0.75],
+                colors: [WHITE],
+                opacities: [1.0, 0.0],
+                angle: [0, 360],
+                texture: getSprite("hexagon").data.tex,
+                quads: [getSprite("hexagon").data.frames[0]],
+             //   scale:(2.5)
+            }, {
+                lifetime: 0.75,
+                rate: 0,
+                direction: dir.scale(-1).angle(),
+                spread: 45,
+            }),
+        ]);
+        splatter.emit(10);
+        splatter.onEnd(() => {
+            destroy(splatter);
+        });
+        if (hit.object && hit.object.is("enemy")) {
+            hit.object.moveBy(dir.unit().scale(10));
+            hit.object.hurt(20);
+        }
+    }
+   
+  
+});
+
+  
+</script>
+<style>
+  #audio-controls {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+    }
+    button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        margin: 0 5px;
+    }
+    button:focus {
+        outline: none;
+    }
+    body{
+      background-color:black;
+    }
+</style>
+<audio id="myAudio" src="assets/Robin Hood.mp3" preload="auto" loop></audio>
+<div id="audio-controls">
+   <button id="playBtn"><i class="fas fa-play"></i></button>
+   <button id="pauseBtn"><i class="fas fa-pause"></i></button>
+   <button id="stopBtn"><i class="fas fa-stop"></i></button>
+</div>
+
+<script>
+ 
+    // Audio controls
+     // Audio controls
+     const audio = document.getElementById('myAudio');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+
+        // Play button functionality
+        playBtn.addEventListener('click', () => {
+            audio.play();
+        });
+
+        // Pause button functionality
+        pauseBtn.addEventListener('click', () => {
+            audio.pause();
+        });
+
+        // Stop button functionality
+        stopBtn.addEventListener('click', () => {
+            audio.pause();
+            audio.currentTime = 0; // Reset playback to the beginning
+        });
+
+        // Spacebar to auto-play music
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                audio.play();
+            }
+        });
+   player.onCollide("top-door", () => {
+    window.location.href = "game6.html";
+});
+
+</script>
+</body>
+</html>

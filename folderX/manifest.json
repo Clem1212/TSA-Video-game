@@ -1,0 +1,22 @@
+{
+    "name": "PinPoint",
+    "short_name": "PP",
+    "description": "See how many people are in an Area and get information using the map",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#c1dade",
+    "theme_color": "#21c2db",
+    "icons": [
+      {
+        "src": "/Logo.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/IMG.jpg",
+        "sizes": "512x512",
+        "type": "image/jpg"
+      }
+    ]
+  }
+  

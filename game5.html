@@ -1,0 +1,43 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Kid's Story Games</title>
+  </head>
+  <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+      #audio-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        button:focus {
+            outline: none;
+        }
+  </style>
+   <audio id="myAudio" src="assets/Robin Hood.mp3" preload="auto" loop></audio>
+   <div id="audio-controls">
+       <button id="playBtn"><i class="fas fa-play"></i></button>
+       <button id="pauseBtn"><i class="fas fa-pause"></i></button>
+       <button id="stopBtn"><i class="fas fa-stop"></i></button>
+   </div>
+
+   <script>
+    // Audio controls
+   
+</script>
+    <script src="https://kaboomjs.com/lib/0.4.1/kaboom.js"></script>
+    <script src="game5.js"></script>
+  </body>
+  </html>

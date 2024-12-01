@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--=============== REMIXICONS ===============-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.4.0/remixicon.css" crossorigin="">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <script src="https://kit.fontawesome.com/30eb1ffcab.js" crossorigin="anonymous"></script>
+
+    <!-- Sidebar bg -->
+    <!--=============== HEADER ===============-->
+    <header class="header">
+        <div class="header__container2 container2">
+            <div class="header__toggle" id="header-toggle">
+                <i class="ri-menu-line"></i>
+            </div>
+        </div>
+    </header>
+
+    <!--=============== SIDEBAR ===============-->
+    <div class="sidebar" id="sidebar" class="draggable">
+        <nav class="sidebar__container">
+            <div class="sidebar__logo">
+               
+            </div>
+
+            <div class="sidebar__content">
+                <div class="sidebar__list">
+                    <a href="#" class="sidebar__link active-link">
+                        <i class="ri-home-5-line"></i>
+                        <span class="sidebar__link-name" onclick="index()">Home</span>
+                    </a>
+                
+
+                <h3 class="sidebar__title">
+                    <span>2 Player Games</span>
+                </h3>
+
+                <div class="sidebar__list">
+                    <a href="#" class="sidebar__link">
+                      <i class="fa-solid fa-table-tennis-paddle-ball" style="color:#a327d0"></i> 
+                      <span class="sidebar__link-name" id="pong-link" href="pong.html" onclick="openGame('pong')">Pong</span>
+                    <a href="#" class="sidebar__link">
+                      <i class="fa-solid fa-pen" style="color:white"></i> 
+                      <span class="sidebar__link-name" href="Pic.html" id="pictionary-link" onclick="openGame('pic')">Pictionary </span>
+                    </a>
+                    <a href="#" class="sidebar__link">
+                      <i class="fa-solid fa-computer-mouse" style="color:#a327d0"></i> 
+                      <span class="sidebar__link-name" href="clicker.html" id="clicker-link" onclick="openGame('click')">Clicker </span>              
+                    </a>
+                    <a href="#" class="sidebar__link">
+                      <i class="fa-solid fa-question" style="color:white"></i>
+                      <span href="20.html" id="20-link" onclick="openGame('20')">20 Questions</span>              
+                    </a>
+                    <a href="#" class="sidebar__link">
+                      <i class="fa-solid fa-4" style="color:red"></i> 
+                      <span href="connect4.html" id="20-link" onclick="openGame('connect4')">Connect4</span>              
+
+
+                    </a>
+                </div>
+
+                <h3 class="sidebar__title">
+                    <span>One Player Games</span>
+                </h3>
+
+                <div class="sidebar__list">
+                    <a href="#" class="sidebar__link">
+                      <i class="fa-solid fa-worm" style="color:rgba(230, 103, 0, 0.278)"></i>
+                        <span href="worm.html" id="worm-link" onclick="openGame('worm')">Worm</span>
+                    </a>
+                    <a href="#" class="sidebar__link">
+                      <img src="7.png" style="height:19px;"> 
+                        <span href="Simon.html" id="simon-link" onclick="openGame('simon')">Simon</a></span>
+                    </a>
+                    <a href="#" class="sidebar__link">
+                      <i class="fa-solid fa-lock" style="color:#a327d0"></i>
+                        <span href="pwd.html" id="password-link" onclick="openGame('pwd')">Password</span>
+
+                          <a href="#" class="sidebar__link">
+                            <i class="fa-solid fa-puzzle-piece" style="color:rgb(106, 106, 223)"></i>
+                              <span href="match.html" id="clicker-link" onclick="openGame('matching')">Matching</span>
+                          </a>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!--=============== MAIN ===============-->
+    <main class="main container" id="main"></main>
+
+    <!--=============== MAIN JS ===============-->
+    <script>
+        const showSidebar = (toggleId, sidebarId, mainId) =>{
+            const toggle = document.getElementById(toggleId),
+            sidebar = document.getElementById(sidebarId),
+            main = document.getElementById(mainId);
+
+            if(toggle && sidebar && main){
+                toggle.addEventListener('click', ()=>{
+                    sidebar.classList.toggle('show-sidebar');
+                    main.classList.toggle('main-pd');
+                });
+            }
+        }
+        showSidebar('header-toggle','sidebar', 'main');
+
+        const sidebarLink = document.querySelectorAll('.sidebar__link');
+
+        function linkColor(){
+            sidebarLink.forEach(l => l.classList.remove('active-link'));
+            this.classList.add('active-link');
+        }
+
+        sidebarLink.forEach(l => l.addEventListener('click', linkColor));
+    </script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap");
+
+        :root {
+            --header-height: 3.5rem;
+
+            /*========== Colors ==========*/
+            --white-color: hsl(0, 0%, 95%);
+            --text-color: hsl(0, 0%, 70%);
+            --dark-color-light: hsl(0, 0%, 10%);
+            --white-color-light: hsla(0, 0%, 95%, .1);
+            --gradient-x: linear-gradient(90deg, hsla(0, 0%, 0%, 0), hsl(0, 0%, 40%), hsla(0, 0%, 0%, 0));
+            --gradient-y:hsla(0, 0%, 95%, .1);
+            
+            --body-font: "Montserrat", sans-serif;
+            --normal-font-size: .938rem;
+            --small-font-size: .813rem;
+
+            --font-medium: 500;
+            --font-semi-bold: 600;
+
+            --z-tooltip: 10;
+            --z-fixed: 100;
+        }
+
+        @media screen and (min-width: 1024px) {
+            :root {
+                --normal-font-size: 1rem;
+                --small-font-size: .875rem;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: var(--body-font);
+            font-size: var(--normal-font-size);
+            color: var(--text-color);
+            background-color: var(--dark-color-light);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container2 {
+            margin-inline: 1.5rem;
+        }
+
+        .main {
+            padding-top: 5rem;
+        }
+
+        .bg-image {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: -1;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--dark-color-light);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: var(--z-fixed);
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--gradient-x);
+        }
+
+        .header__container2 {
+            height: var(--header-height);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header__toggle {
+            font-size: 1.25rem;
+            color: var(--white-color);
+            cursor: pointer;
+        }
+
+        .header__logo {
+            width: 70px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: -100%;
+            top: var(--header-height);
+            width: 250px;
+            height: calc(100% - var(--header-height));
+            padding: 2rem 1.5rem;
+            background-color: var(--dark-color-light);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: var(--z-fixed);
+            transition: left .3s;
+            overflow-y: auto; /* Add this line for a scrollbar */
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+/* 
+   
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: var(--text-color);
+            border-radius: 4px;
+        }
+*/
+        .sidebar::-webkit-scrollbar-track {
+            background-color: var(--dark-color-light);
+        }
+
+        .show-sidebar {
+            left: 0;
+        }
+
+        .sidebar::before {
+            content: "";
+            position: absolute;
+            left: 100%;
+            top: 0;
+            width: 1px;
+            height: 100%;
+            background: var(--gradient-y);
+        }
+
+        .sidebar__logo {
+            display: flex;
+            align-items: center;
+            column-gap: .5rem;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar__logo-img {
+            width: 25px;
+        }
+
+        .sidebar__logo-text {
+            width: 100px;
+        }
+
+        .sidebar__content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar__list {
+            display: grid;
+            row-gap: 1.5rem;
+        }
+
+        .sidebar__link {
+            display: flex;
+            align-items: center;
+            column-gap: 1rem;
+            padding: .4rem 1rem;
+            border-radius: .75rem;
+            color: var(--text-color);
+            transition: all .3s;
+        }
+
+        .sidebar__link:hover {
+            background-color: var(--white-color-light);
+        }
+
+        .sidebar__link-name {
+            font-size: var(--normal-font-size);
+            font-weight: var(--font-medium);
+        }
+
+        .sidebar__link-floating {
+            font-size: var(--small-font-size);
+            font-weight: var(--font-semi-bold);
+            margin-left: auto;
+            transform: translateX(-140%);
+            opacity: 0;
+            transition: all .4s;
+        }
+
+        .active-link {
+            background-color: var(--white-color-light);
+        }
+
+        .active-link .sidebar__link-floating {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .sidebar__title {
+            padding: 2.5rem 0 1rem;
+            color: var(--text-color);
+            font-size: var(--small-font-size);
+        }
+
+        .main-pd {
+            padding-left: 21rem;
+        }
+    </style>
+</body>
+</html>
