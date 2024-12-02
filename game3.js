@@ -23,7 +23,8 @@ loadSprite("top-door", "0qOD7Uv.png"); // Top-door sprite
 loadSprite("bg", "oVthydE.png"); // Background
 loadSprite("bg2", "WjsAsIC.jpg");
 loadSprite("bg3", "KNzR4ze.png");
-
+loadSprite("bg4", "/6YP0c24.png");
+//https://imgur.com/6YP0c24
 // Title scene
 scene("title", () => {
     layers(["bg2", "obj"], "obj");
@@ -84,6 +85,7 @@ scene("game", () => {
     add([sprite("bg"), pos(0, 0), scale(width() / 240, height() / 240), scale(3)]);
     add([sprite("bg3"), pos(540, 6), scale(width() / 240, height() / 240), scale(0.5)]);
     add([sprite("bg"), pos(-100, 6), scale(width() / 240, height() / 240), scale(0.5)]);
+    add([sprite("bg4"), pos(0, 360), scale(width() / 240, height() / 240), scale(0.9)]);
 
     const player = add([sprite("bird"), pos(80, 80), body(), scale(0.9), "player"]);
     const player2 = add([sprite("bird2"), pos(80, 80), body(), scale(0.058), "player2"]);
@@ -209,3 +211,4 @@ scene("win", ({ score }) => {
 
 // Start the game
 start("title");
+
