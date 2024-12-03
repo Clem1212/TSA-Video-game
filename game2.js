@@ -144,25 +144,32 @@ scene('rules', () => {
   ]);
   
   add([
-      text('2. Run around & dogde enemies ', 16),
+      text('2. Dodge enemies and collect eggs', 14),
       origin('center'),
-      pos(width() / 2, height() / 2),
+      pos(width() / 2, height() / 1.8),
       color(0, 0, 0)
   ]);
   
   add([
-      text('enemies to collect eggs', 16),
+      text('Use Power-Ups to gain an advantage (press SPACE)', 9),
       origin('center'),
       pos(width() / 2, height() / 1.5),
       color(0, 0, 0)
   ]);
   //
   add([
-    text('SPACE to start & reload game.', 16),
+    text(' Press SPACE to start and reload the game ', 12),
     origin('center'),
-    pos(width() / 2, height() / 1.2),
+    pos(width() / 2, height() / 1.3),
     color(0, 0, 0)
 ]);
+add([
+  text('& activate Power Up.', 16),
+  origin('center'),
+  pos(width() / 2, height() / 1.1),
+  color(0, 0, 0)
+]);
+//& activate Utilities.
   // Transition to the game scene
   keyPress('space', () => {
     go('game', { level: 0, score: 0 }); // Start the game
