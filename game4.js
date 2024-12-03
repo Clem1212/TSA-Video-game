@@ -8,13 +8,12 @@ kaboom({
 
 // Change img
 const PLATFORM_SPEED = 100; // Horizontal movement speed
-const PLATFORM_SPAWN_INTERVAL = 2; // Time interval between spawns
+const PLATFORM_SPAWN_INTERVAL = 5; // Time interval between spawns
 const MIN_Y = -1000; // Minimum vertical position
-const MAX_Y = height() - 30; // Maximum visible vertical position
+const MAX_Y = height() - 20; // Maximum visible vertical position
 
-const JUMP_FORCE = 900;
+const JUMP_FORCE = 800;
 const GRAVITY = 1200;
-
 const WIN_HEIGHT = -1000;
 // Load assets
 loadRoot('https://i.imgur.com/');
@@ -141,7 +140,64 @@ add([sprite("bg"),
      scale(0.070),
         "player",
     ]);
-    
+    let activeCamera = player;
+
+    // Function to switch the camera position
+    function switchCamera() {
+        activeCamera = (activeCamera === player) ? player2 : player;
+    }
+
+    // Press space bar to switch between player cam positions
+    keyPress('space', switchCamera);
+
+    // Add this outside of any specific player action
+    action(() => {
+        // Update the camera position based on the active camera
+        camPos(activeCamera.pos);
+
+        // Hide player2 if it goes off-screen
+        if (player2.pos.y > height()) {
+            player2.hidden = true; // Make player2 invisible
+            activeCamera = player; // Set the active camera to player1
+        } else {
+            player2.hidden = false; // Make player2 visible when it's on-screen
+        }
+    });
+
+    // Player-specific action logic
+    player.action(() => {
+        if (player.pos.x < 0) {
+            player.pos.x = 0;
+        }
+        if (player.pos.x > width()) {
+            player.pos.x = width();
+        }
+
+        if (player.pos.y > height()) {
+            go("lose", { score: scoreLabel.value });
+        }
+        if (player.pos.y < WIN_HEIGHT) {
+            go("win", { score: scoreLabel.value });
+        }
+    });
+
+    player2.action(() => {
+        if (player2.pos.x < 0) {
+            player2.pos.x = 0;
+        }
+        if (player2.pos.x > width()) {
+            player2.pos.x = width();
+        }
+
+        if (player2.pos.y > height()) {
+            // Player2 is off-screen, and we are already handling this in the global action
+        }
+        if (player2.pos.y < WIN_HEIGHT) {
+            go("win", { score: scoreLabel.value });
+        }
+    });
+
+
     // Set gravity
     gravity(GRAVITY);
 
@@ -161,23 +217,49 @@ wait(5, () => {
 
 // Constants
 // Load the top-door sprite
+let platforms = []; // Array to store existing platforms
 
-// Function to spawn platforms
 function spawnPlatform() {
-    const yPos = rand(MIN_Y, MAX_Y); // Random vertical position between -1600 and screen height
-    const xStart = rand() > 0.5 ? 0 : width() - 80; // Start on the left or right
+    // Get camera position and dimensions
+    const cameraPos = camPos();
+    const visibleXStart = cameraPos.x - width() / 2; // Left boundary of the visible area
+    const visibleXEnd = cameraPos.x + width() / 2;  // Right boundary of the visible area
+    const visibleYStart = cameraPos.y - height() / 2; // Top boundary of the visible area
+    const visibleYEnd = cameraPos.y + height() / 2;  // Bottom boundary of the visible area
+
+    let xPos = rand(visibleXStart, visibleXEnd); // Random horizontal position
+    let yPos = rand(visibleYStart, visibleYEnd - 100); // Random vertical position (subtract height for better placement)
+
+    // Check for collision with existing platforms to ensure they are not too close
+    const MIN_DISTANCE = 100; // Minimum distance between platforms on the y-axis
+    let isValidPosition = false;
+
+    while (!isValidPosition) {
+        isValidPosition = true;
+        for (const existingPlatform of platforms) {
+            if (Math.abs(existingPlatform.pos.y - yPos) < MIN_DISTANCE) {
+                // If the y-position is too close to an existing platform, set a new y-position
+                yPos = rand(visibleYStart, visibleYEnd - 100);
+                isValidPosition = false;
+                break;
+            }
+        }
+    }
 
     const platform = add([
         sprite('platform'),
-        pos(xStart, yPos), // Start position
+        pos(xPos, yPos),
         solid(),
         scale(1.5),
         "platform",
         {
-            xSpeed: PLATFORM_SPEED, // Speed of horizontal movement
-            direction: xStart === 0 ? 1 : -1, // Initial direction based on spawn side
+            xSpeed: PLATFORM_SPEED,
+            direction: rand() > 0.5 ? 1 : -1, // Random direction
         },
     ]);
+
+    // Add the new platform to the platforms array
+    platforms.push(platform);
 
     // Check if this platform is above y = -980 to place the top-door
     if (yPos < -980) {
@@ -203,12 +285,12 @@ function spawnPlatform() {
         }
     });
 
-    // Schedule the next platform spawn
+    // Schedule the next spawn
     wait(PLATFORM_SPAWN_INTERVAL, spawnPlatform);
 }
 
-// Start spawning platforms
-spawnPlatform();
+
+   
 
 
     // Start spawning platforms
