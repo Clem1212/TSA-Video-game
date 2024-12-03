@@ -190,23 +190,37 @@ scene('rules', () => {
     ]);
     
     add([
-        text('1. Use arrow keys to move', 16),
+        text('1. Use arrow keys and WASD to move', 13),
         origin('center'),
         pos(width() / 2, height() / 2.5),
         color(1, 1, 1), 
     ]);
     
     add([
-        text('2. Avoid rats and collect eggs', 16),
+        text('2. Avoid rats and collect eggs ', 16),
         origin('center'),
         pos(width() / 2, height() / 1.9),
         color(1, 1, 1), 
     ]);
-    
+    //Press down key /s key to activate Utilities 
+    //collect book page to go to the next lvl
+    add([
+      text('Press the down arrow key or S key to activate powers', 9),
+      origin('center'),
+      pos(width() / 2, height() / 1.5),
+      color(1, 1, 1), 
+  ]);
+  add([
+    text('Collect book pages to proceed to the next level', 10),
+    origin('center'),
+    pos(width() / 2, height() / 1.3),
+    color(1, 1, 1), 
+]);
+
     add([
         text('Press SPACE to start the game', 16),
         origin('center'),
-        pos(width() / 2, height() / 1.5),
+        pos(width() / 2, height() / 1.1),
         color(1, 1, 1), 
     ]);
 
@@ -289,7 +303,7 @@ start('title');
       //LI
      
       'F': [sprite('testing'), solid(), 'testing', body(), scale(2), 'pipe'],
-     'i': [sprite('testingw'), solid(), 'testing',  scale(1), 'bmw'],
+     'i': [sprite('testingw'),  'testing',  scale(1), 'bmw'],
      
     
       
@@ -394,10 +408,10 @@ start('title');
   
 
   player.collides('bmw', () => {
-      keyPress('down', () => {
+    
         window.location.href = "game2.html";
   
-      })
+    
     })
   
   
@@ -450,12 +464,12 @@ start('title');
     
   //pipe testing
     player.collides('pipe', () => {
-      keyPress('down', () => {
+     
         
         
         go('win', { score: scoreLabel.value})
         
-      })
+      
     })
     
 
