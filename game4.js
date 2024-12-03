@@ -80,23 +80,29 @@ scene('rules', () => {
     ]);
     
     add([
-        text('1. Use W and up key to jump', 16),
+        text('1.Press W and up key to jump', 16),
         origin('center'),
         pos(width() / 2, height() / 2.5),
         color(0, 0, 0) 
     ]);
     
     add([
-        text('2.Jump on blocks to climb the beenstalk', 16),
+        text('2.Jump on blocks to climb the beanstalk', 16),
         origin('center'),
         pos(width() / 2, height() / 2),
         color(0, 0, 0) 
     ]);
-    
+    add([
+        text('reach the top to win', 16),
+        origin('center'),
+        pos(width() / 2, height() / 1.5),
+        color(0, 0, 0)  
+    ]);
+
     add([
         text('Press SPACE to start the game & reload the game.', 16),
         origin('center'),
-        pos(width() / 2, height() / 1.5),
+        pos(width() / 2, height() / 1.3),
         color(0, 0, 0)  
     ]);
 
