@@ -66,7 +66,7 @@ scene('title', () => {
         color(0,0,0)
     ]);
     add([
-        text('2. click and move the mouse to shoot the targets for your tranning', 16),
+        text('2. click and move the mouse to shoot the targets for your training', 16),
         origin('center'),
         pos(width() / 2, height() / 2.5),
         color(0,0,0)
@@ -97,3 +97,4 @@ scene('game', () => {
 })
 
 start('game')
+
