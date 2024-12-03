@@ -11,7 +11,8 @@ const JUMP_FORCE = 400;
 const PIPE_SPEED = 120;
 const PIPE_OPEN = 200; // The gap between pipes
 const FALL_DEATH = 600;
-const PIPE_SPAWN_INTERVAL = 2; // Seconds
+const PIPE_SPAWN_INTERVAL = 3.5; // Seconds
+//const PIPE_SPAWN_INTERVAL = 2.5; // Seconds
 const WIN_SCORE = 20;
 
 // Load assets
@@ -211,4 +212,3 @@ scene("win", ({ score }) => {
 
 // Start the game
 start("title");
-
