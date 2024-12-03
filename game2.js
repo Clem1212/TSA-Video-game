@@ -415,7 +415,7 @@ keyDown('o', (list) => {
 
         // Start cooldown
         canSpawnKaboom = false;
-        wait(4, () => {
+        wait(2, () => {
             canSpawnKaboom = true; // Reset cooldown after 6 seconds
         });
     }
@@ -609,4 +609,5 @@ scene('lose', ({ score }) => {
 
 
 start('game', { level: 0, score: 0 })
+
 
