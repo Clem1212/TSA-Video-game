@@ -76,21 +76,26 @@ scene('rules', () => {
   ]);
   
   add([
-      text('1. Use A & D key to dodge falling iteams', 16),
+      text('1. Use left & right key to dodge falling iteams', 16),
       origin('center'),
       pos(width() / 2, height() / 2.5),
   ]);
-  
+  add([
+    text('Press down key to activate shield', 16),
+    origin('center'),
+    pos(width() / 2, height() / 2),
+]);
+
   add([
       text('2.Train with Rapunzel for witch fight', 16),
       origin('center'),
-      pos(width() / 2, height() / 2),
+      pos(width() / 2, height() / 1.5),
   ]);
   
   add([
       text('Press SPACE to start the game and reload the game.', 16),
       origin('center'),
-      pos(width() / 2, height() / 1.5), 
+      pos(width() / 2, height() / 1.2), 
   ]);
 
   // Transition to the game scene
