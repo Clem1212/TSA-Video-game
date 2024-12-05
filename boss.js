@@ -42,7 +42,7 @@ loadSprite('space-invader4', '/I6pQvIO.png')
 loadSprite('space-invader5', '/zAlD3nG.png')
 loadSprite('boss', '/5CZlmIl.png')
 //https://imgur.com/PRtrBsP
-loadSprite('boss2', 'PRtrBsP.png')
+loadSprite('boss2', 'Lq1UdKY.png')
 loadSprite('2-top-left', '/0fOOkok.png')
 loadSprite('2-top-right', '/fovDvKp.png')
 
