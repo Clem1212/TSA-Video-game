@@ -186,7 +186,7 @@ scene('game', ({ level, score, }) => {
       'aOOO}OO^0Oa',
       'aO    OOO a',
       'aOOOO  &OOa',
-      'aO* }OOOO}a',
+      'aO*} OOOO}a',
       'aOO OOOOOOa',
       'aOOOOOOOOOa',
       'aOOO OOOO0a',
@@ -422,7 +422,7 @@ keyDown('o', (list) => {
 
         // Start cooldown
         canSpawnKaboom = false;
-        wait(2, () => {
+        wait(1, () => {
             canSpawnKaboom = true; // Reset cooldown after 6 seconds
         });
     }
@@ -434,7 +434,7 @@ keyPress("space", () => {
 
       // Start cooldown
       canSpawnKaboom2 = false;
-      wait(4, () => {
+      wait(1, () => {
           canSpawnKaboom2 = true; // Reset cooldown after 6 seconds
       });
   }
@@ -465,7 +465,7 @@ keyPress("space", () => {
 
         // Start cooldown
         canSpawnKaboom = false;
-        wait(6, () => {
+        wait(1, () => {
             canSpawnKaboom = true; // Reset cooldown after 6 seconds
         });
     }
@@ -489,6 +489,30 @@ keyPress("space", () => {
 }
  
 
+collides('kaboom', 'amy', (k,s) => {
+  camShake(2)
+  wait(1, () => {
+    destroy(k)
+  })
+  destroy(s)
+  scoreLabel.value++
+  scoreLabel.text = scoreLabel.value
+})
+
+
+collides('kaboom2', 'amy2', (k,s) => {
+  camShake(2)
+  wait(1, () => {
+    destroy(k)
+  })
+  destroy(s)
+  scoreLabel.value++
+  scoreLabel.text = scoreLabel.value
+})
+
+
+
+
 
   collides('kaboom2', 'amy', (k,s) => {
     camShake(2)
@@ -501,7 +525,7 @@ keyPress("space", () => {
   })
 
 
-  collides('kaboom2', 'amy2', (k,s) => {
+  collides('kaboom', 'amy2', (k,s) => {
     camShake(2)
     wait(1, () => {
       destroy(k)
@@ -513,6 +537,16 @@ keyPress("space", () => {
 
 
 
+ 
+  collides('kaboom2', 'skeletor', (k,s) => {
+    camShake(2)
+    wait(1, () => {
+      destroy(k)
+    })
+    destroy(s)
+    scoreLabel.value++
+    scoreLabel.text = scoreLabel.value
+  })
  
   collides('kaboom', 'skeletor', (k,s) => {
     camShake(2)
@@ -524,6 +558,8 @@ keyPress("space", () => {
     scoreLabel.text = scoreLabel.value
   })
  
+
+  
 
   
 
@@ -616,5 +652,4 @@ scene('lose', ({ score }) => {
 
 
 start('game', { level: 0, score: 0 })
-
 
